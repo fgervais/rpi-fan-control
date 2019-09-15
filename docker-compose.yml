@@ -12,13 +12,11 @@ services:
   fan-control:
     build:
       context: .
-      target: dev
     image: fan-control
     environment:
       - PYTHONUNBUFFERED=1
       - PIGPIO_ADDR=pigpio
     volumes:
-       - ${PWD}:/app
        - /sys/class/thermal/thermal_zone0/temp:/sys/class/thermal/thermal_zone0/temp
     depends_on:
       - pigpio

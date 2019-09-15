@@ -1,0 +1,8 @@
+version: "3.4"
+services:
+  fan-control:
+    build:
+      target: dev
+    image: fan-control-dev
+    volumes:
+       - ${PWD}:/app
