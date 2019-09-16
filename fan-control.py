@@ -7,6 +7,7 @@ from gpiozero import CPUTemperature
 
 
 def teardown():
+    logger.info("Teardown")
     pi.set_mode(12, pigpio.INPUT)
     pi.set_pull_up_down(12, pigpio.PUD_DOWN)
     pi.stop()
