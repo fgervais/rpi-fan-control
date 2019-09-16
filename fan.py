@@ -15,3 +15,29 @@ class Fan:
             self.pwm_pin,
             25000,
             int(1e6*multiplier))
+
+
+class Controller:
+    def __init__(self, config):
+        self.config = config
+
+    def required_speed(self, temperature):
+        low_boundary = None
+        high_boundary = None
+
+        for i in self.config:
+            if temperature > i["t"]:
+                low_boundary = i
+            else:
+                high_boundary = i
+
+        if low_boundary is None:
+            return 0
+        if high_boundary is None:
+            return 100
+
+        req_speed_pct = (low_boundary["speed"]
+                + (temperature - low_boundary["t"])
+                * (high_boundary["speed"] - low_boundary["speed"])
+                / (high_boundary["t"] - low_boundary["t"]))
+        return round(req_speed_pct / 100, 2)

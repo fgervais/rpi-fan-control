@@ -2,12 +2,15 @@ import time
 import pigpio
 import logging
 import signal
+import yaml
 
 from gpiozero import CPUTemperature
-from fan import Fan
+from fan import Fan, Controller
+from pprint import pformat
 
 
 PWM_PIN = 12
+CONFIG_FILE = "config.yml"
 
 
 def teardown():
@@ -25,7 +28,7 @@ def sigterm_handler(signal, frame):
 
 logging.basicConfig(
     format='[%(asctime)s] %(levelname)-8s %(message)s',
-    level=logging.DEBUG,
+    level=logging.INFO,
     datefmt='%Y-%m-%d %H:%M:%S')
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
@@ -40,9 +43,16 @@ if not pi.connected:
 cpu = CPUTemperature()
 fan = Fan(pi, PWM_PIN)
 
-print(cpu.temperature)
+with open(CONFIG_FILE, 'r') as stream:
+    config = yaml.safe_load(stream)
+
+controller = Controller(config)
+
+logger.debug(pformat(config))
 
 while True:
+    temperature = cpu.temperature
+    required_speed = controller.required_speed(temperature)
+    logger.debug("{}: {}".format(temperature, required_speed))
+    fan.speed = required_speed
     time.sleep(1)
-    fan.speed = 0.1
-    print(fan.speed)
