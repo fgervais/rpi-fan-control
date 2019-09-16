@@ -15,6 +15,7 @@ services:
     image: fan-control
     environment:
       - PYTHONUNBUFFERED=1
+      - GPIOZERO_PIN_FACTORY=pigpio
       - PIGPIO_ADDR=pigpio
     volumes:
        - /sys/class/thermal/thermal_zone0/temp:/sys/class/thermal/thermal_zone0/temp
