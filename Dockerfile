@@ -3,7 +3,7 @@ COPY requirements.txt /app/
 WORKDIR /app
 RUN pip install -r requirements.txt && \
 	rm requirements.txt
-CMD ["python", "fan-control.py"]
+ENTRYPOINT ["python", "fan-control.py"]
 
 FROM dev
 COPY . /app/

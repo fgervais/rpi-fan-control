@@ -3,6 +3,7 @@ import pigpio
 import logging
 import signal
 import yaml
+import argparse
 
 from gpiozero import CPUTemperature
 from fan import Fan, Controller
@@ -25,13 +26,17 @@ def sigterm_handler(signal, frame):
     teardown()
     exit(0)
 
+parser = argparse.ArgumentParser()
+parser.add_argument("--debug", "-d", action='store_true')
+args = parser.parse_args()
 
 logging.basicConfig(
     format='[%(asctime)s] %(levelname)-8s %(message)s',
     level=logging.INFO,
     datefmt='%Y-%m-%d %H:%M:%S')
 logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
+if args.debug:
+    logger.setLevel(logging.DEBUG)
 
 signal.signal(signal.SIGTERM, sigterm_handler)
 
