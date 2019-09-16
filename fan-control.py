@@ -4,6 +4,10 @@ import logging
 import signal
 
 from gpiozero import CPUTemperature
+from fan import Fan
+
+
+PWM_PIN = 12
 
 
 def teardown():
@@ -34,10 +38,11 @@ if not pi.connected:
     exit(1)
 
 cpu = CPUTemperature()
-pi.hardware_PWM(12, 25000, int(1e6*0.50))
+fan = Fan(pi, PWM_PIN)
 
 print(cpu.temperature)
 
-
 while True:
     time.sleep(1)
+    fan.speed = 0.1
+    print(fan.speed)
