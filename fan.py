@@ -30,6 +30,7 @@ class Controller:
                 low_boundary = i
             else:
                 high_boundary = i
+                break
 
         if low_boundary is None:
             return 0

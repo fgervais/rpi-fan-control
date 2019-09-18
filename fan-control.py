@@ -60,4 +60,4 @@ while True:
     required_speed = controller.required_speed(temperature)
     logger.debug("{}: {}".format(temperature, required_speed))
     fan.speed = required_speed
-    time.sleep(1)
+    time.sleep(5)
